@@ -1,0 +1,24 @@
+{
+  "name": "three-svg-converter",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "serve": "http-server",
+    "build": "webpack --mode=production",
+    "watch": "webpack --watch --mode=development",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "http-server": "^0.11.1",
+    "jest": "^23.6.0",
+    "three-snapshot-serializer": "^1.1.0",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "three-full": "^11.3.2",
+    "three-js-csg": "^72.0.0"
+  }
+}
