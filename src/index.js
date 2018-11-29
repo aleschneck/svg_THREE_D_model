@@ -20,7 +20,7 @@ const renderer = new WebGLRenderer( { canvas: document.querySelector('canvas') }
 renderer.setSize( window.innerWidth, window.innerHeight - 80 );
 renderer.setPixelRatio( window.devicePixelRatio );
 
-camera.position.set(100, 100, 200);
+camera.position.set(100, 100, -200);
 
 new OrbitControls( camera );
 
@@ -34,7 +34,6 @@ const animate = () => {
 };
 
 animate();
-
 
 const inputFront = document.getElementById( 'front_svg' ), 
       inputSide = document.getElementById( 'side_svg' ),

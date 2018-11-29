@@ -33,7 +33,7 @@ const svgToMesh = async ( pathToSVG, side = false ) => {
         
         }
         if(side) {
-          group.rotation.y = -90 * Math.PI/180;
+          group.rotation.y = 90 * Math.PI/180;
           group.rotation.z = 180 * Math.PI/180;
         } else {
           group.rotation.z = 180 * Math.PI/180;
