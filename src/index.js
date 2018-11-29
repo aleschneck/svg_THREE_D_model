@@ -12,66 +12,104 @@ import {
 import svgToMesh from './svgToMesh';
 import groupAndFactoriseMeshes from './groupAndFactoriseMeshes';
 
-const scene = new Scene();
-       
-const camera = new PerspectiveCamera( 50, window.innerWidth/window.innerHeight, 0.1, 1000 );
-camera.position.set(0, 1, 100);
+const renderer = new WebGLRenderer( { canvas: document.querySelector('canvas') } ), // { alpha: true } 
+      scene = new Scene(),
+      camera = new PerspectiveCamera( 50, window.innerWidth/window.innerHeight, 0.1, 1000 ),
+      light = new PointLight( 0xffffff, 1, 4000 );
 
-const light = new PointLight(0xffffff, 1, 4000), 
-      light2 = new PointLight(0xffffff, 1, 4000);
-light.position.set(50, 0, 0);
-light2.position.set(100, 800, 800);
-scene.add(light, light2, new AmbientLight(0x404040));
-
-
-const renderer = new WebGLRenderer(); // { alpha: true }
-renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.setSize( window.innerWidth, window.innerHeight - 80 );
 renderer.setPixelRatio( window.devicePixelRatio );
-document.body.appendChild( renderer.domElement );
 
-const controls = new OrbitControls( camera );
+camera.position.set(100, 100, 200);
 
-const front = svgToMesh('../svg/plane_c_front.svg'), side = svgToMesh('../svg/plane_c_side.svg', true );
+new OrbitControls( camera );
 
-Promise.all([
-  front,
-  side
-])
-.then( vals => {
-  let scn = new Scene();
-  const arr = [];
-  for ( const group of vals ) {
-    new Box3().setFromObject( group ).getCenter( group.position ).multiplyScalar( - 1 );
-    while (group.children.length) {
-      SceneUtils.detach( group.children[0], group, scn );
-    }
-  }
+light.position.set(10, -100, 0);
 
-  //scene.copy( scn );
-  
-  
-  groupAndFactoriseMeshes( scn.children, arr );
-  
-  const groupOfIntersections = new Group();
-  for ( let child of arr ) {
-    groupOfIntersections.add( child );
-  }
-  scene.add( groupOfIntersections );
-  
-})
-.catch( err => { console.log(err) })
-
-//camera.lookAt(new THREE.Vector3());
+scene.add( light, new AmbientLight( 0x404040 ) );
 
 const animate = () => {
   requestAnimationFrame( animate );
-
-  //cube.rotation.x += 0.01;
-  //cube.rotation.y += 0.01;
-
   renderer.render( scene, camera );
 };
 
 animate();
 
-//console.log(scene);
+
+const inputFront = document.getElementById( 'front_svg' ), 
+      inputSide = document.getElementById( 'side_svg' ),
+      pathObject = { front: null, side: null };
+		
+/**
+ * Selects an svg file and adds it to the pathObject
+ * @param { Event } event 
+ */
+const	handleFileSelect = ( event ) => {
+
+  const	reader = new FileReader();
+  
+  reader.readAsDataURL( event.srcElement.files[0] );
+
+  reader.onload = () => {
+    // Remove previously appended img elements
+    for( let child of event.target.parentNode.children ) {
+      if( child.nodeName === 'IMG' ) {
+        event.target.parentNode.removeChild( child );
+      }
+    }
+    // create and append thumbnail
+    const imgElm = document.createElement('img');
+    imgElm.setAttribute('src', reader.result );
+    event.target.parentNode.append( imgElm );
+    
+    if( event.target.name === 'front' ) {
+      pathObject.front = reader.result;
+      event.target.previousElementSibling.innerHTML = 'change front image';
+    }
+    if( event.target.name === 'side' ) {
+      pathObject.side = reader.result;
+      event.target.previousElementSibling.innerHTML = 'change side image';
+    }
+
+    // user has chosen front and side images
+    if( pathObject.front != null && pathObject.side != null ) {
+      event.target.parentNode.parentNode.classList.add( 'chosen' );
+      // resolve promises
+      Promise.all([
+        svgToMesh( pathObject.front ),
+        svgToMesh( pathObject.side, true )
+      ])
+      .then( vals => {
+
+        let tmpScene = new Scene();
+        const arrOfFactorisedMeshes = [];
+
+        for ( const group of vals ) {
+          // centre again the group
+          new Box3().setFromObject( group ).getCenter( group.position ).multiplyScalar( - 1 );
+          while ( group.children.length ) {
+            // detach mesh from its group and add to tmpScene
+            SceneUtils.detach( group.children[0], group, tmpScene );
+          }
+        }
+      
+        //scene.copy( tmpScene );
+         
+        groupAndFactoriseMeshes( tmpScene.children, arrOfFactorisedMeshes );
+        
+        const groupOfIntersections = new Group();
+        // add meshes to new group
+        for ( let child of arrOfFactorisedMeshes ) {
+          groupOfIntersections.add( child );
+        }
+        // add group to scene
+        scene.add( groupOfIntersections );
+        
+      })
+      .catch( err => { console.log(err) });
+    }
+  }
+}
+  
+inputFront.addEventListener( 'change', handleFileSelect );
+inputSide.addEventListener( 'change', handleFileSelect );

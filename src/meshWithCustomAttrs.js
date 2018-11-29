@@ -6,10 +6,10 @@ import { Mesh } from 'three-full';
  */
 class MeshWithCustomAttrs extends Mesh {
   /**
-   * @param  { THREE.ExtrudeGeometry } geometry
-   * @param  { THREE.MeshBasicMaterial } material
-   * @param  { number } colour
-   * @param  { boolean } side
+   * @param  { THREE.ExtrudeGeometry } geometry - a geometry of a shape
+   * @param  { THREE.MeshBasicMaterial } material - a material, usualy a wireframe with the shape colour
+   * @param  { number } colour - a hex code ( the shape color )
+   * @param  { boolean } side - whether it corresponds to the side image
    */
   constructor( geometry, material, colour, side ) {
     super( geometry, material );

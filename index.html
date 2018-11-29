@@ -2,13 +2,102 @@
 <html>
 	<head>
 		<meta charset=utf-8>
-		<title>My first three.js app</title>
+		<title>svg THREE D model</title>
 		<style>
-			body { margin: 0; }
-			canvas { width: 100%; height: 100% }
+			body { 
+				margin: 0;	
+				font-family: sans-serif;
+			}
+			canvas {
+				width: 100%;
+				height: calc( 100% - 80px);
+			}
+			header {
+				height: 80px;
+				display: flex;
+				align-items: center;
+  			justify-content: space-evenly;
+				width: 100%;
+				background-color: lightgrey;
+			}
+			.wrapper {
+				display: flex;
+				flex-wrap: wrap;
+			}
+			input[type=file] {
+				opacity: 0;
+  			overflow: hidden;
+				width: 0;
+				height: 0;
+			}
+			.input-wrap {
+				padding: 0 30px;
+				width: calc(50% - 60px);
+				display: flex;
+				align-content: center;
+			}
+			.chosen .input-wrap {
+				justify-content: center;
+			}
+			.input-wrap label,
+			.plus button {
+				cursor: pointer;
+				padding: 12px;
+				margin: 20px 0;
+				background-color: red;
+				color: white;
+				border-radius: 4px;
+			}
+			.chosen .input-wrap label {
+				display: none;
+			}
+			.input-wrap img {
+				height: 80px;
+				width: auto;
+				margin-left: 10%;
+			}
+			.chosen .input-wrap img {
+				margin-left: 0;
+			}
+			.plus {
+				color: red;
+				font-size: 48px;
+				display: none;
+			}
+			.plus button {
+				margin-right: 20px;
+				border: none;
+				min-width: 100px;
+			}
+			.chosen .plus {
+				display: inline;
+			}
 		</style>
 	</head>
 	<body>
+		<div class="wrapper">
+			<header>
+				<div class="input-wrap">
+					<label for="front_svg">
+						choose a front image
+					</label>
+					<input type="file" id="front_svg" name="front" accept="image/svg+xml" />
+				</div>
+				<div class="plus"> + </div>
+				<div class="input-wrap">
+					<label for="side_svg">
+						choose a side image
+					</label>
+					<input type="file" id="side_svg" name="side" accept="image/svg+xml">			
+				</div>
+				<div class="plus">
+					<button onclick="location.reload();">
+						try it again!
+					</button>
+				</div>
+			</header>
+			<canvas></canvas>
+		</div>
 		<script src="dist/main.js"></script>
 	</body>
 </html>

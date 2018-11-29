@@ -2,8 +2,9 @@ import * as THREE from 'three-full';
 const ThreeBSP = require('three-js-csg')(THREE);
 
 /**
- * @param  { THREE.Mesh } a - one of the two meshes to be CSG computed
- * @param  { THREE.Mesh } b - one of the two meshes to be CSG computed
+ * compute two meshes with constructive solid geometry (CSG)
+ * @param  { THREE.Mesh } a - one of the two meshes to be computed
+ * @param  { THREE.Mesh } b - one of the two meshes to be computed
  * @param  { THREE.Material } material - the material of the computed solid
  * @param  { string } [operation=intersect] - the type of boolean operation,
  * @return { THREE.Mesh } the computed solid

@@ -2,6 +2,7 @@ import { Group, SVGLoader, MeshBasicMaterial, ExtrudeGeometry, Box3 } from 'thre
 import MeshWithCustomAttrs from './meshWithCustomAttrs';
 
 /**
+ * convert the chosen svg image into a custom mesh
  * @async
  * @param  { string } pathToSVG - the path to the svg file
  * @param  { boolean } [side=false] - whether the svg corresponds to the side view
@@ -14,8 +15,6 @@ const svgToMesh = async ( pathToSVG, side = false ) => {
     
     svgLoader.load( pathToSVG , ( paths ) => {
         for ( let path of paths ) {
-          //console.log(`path`, path );
-          
           let extrudeSettings = {
             steps: 2,
             depth: 1000,
@@ -29,20 +28,18 @@ const svgToMesh = async ( pathToSVG, side = false ) => {
           for ( let shape of shapes ) {
             const geometry = new ExtrudeGeometry( shape, extrudeSettings );
             const mesh = new MeshWithCustomAttrs( geometry, material, path.color.getHex(), side );
-            //console.log(`mesh`, mesh);  
             group.add( mesh ); 
           }
         
         }
-        if(side) { // if side
+        if(side) {
           group.rotation.y = -90 * Math.PI/180;
           group.rotation.z = 180 * Math.PI/180;
         } else {
           group.rotation.z = 180 * Math.PI/180;
         }
-        // group should be centred
+        // centre group
         new Box3().setFromObject( group ).getCenter( group.position ).multiplyScalar( - 1 );
-        //console.log(JSON.stringify(group.position));
         resolve(group);
       }, ( xhr ) => {
         // called when loading is in progresses
@@ -53,7 +50,6 @@ const svgToMesh = async ( pathToSVG, side = false ) => {
       }
     );
   });
-  //console.log(group);
   return group;
 }
 

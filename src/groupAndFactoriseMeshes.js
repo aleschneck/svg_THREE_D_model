@@ -3,6 +3,7 @@ import meshFactory from './meshFactory';
 
 
 /**
+ * finds correspondent meshes and factorise their permutations
  * @param  { THREE.Mesh[] } src - an array of Meshes, usually the children of a THREE.Scene
  * @param  { Array } target - the target array for the grouped meshes
  */
