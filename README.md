@@ -20,7 +20,7 @@ renders
 ![just greys](./assets/wheels_grey.png)  
 
 ## Usage
-install node and clone the repository, to install the dependencies open your terminal and run:
+Install node and clone the repository. To install the dependencies open your terminal and run:
 
 ```
 npm install
