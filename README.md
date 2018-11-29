@@ -33,7 +33,9 @@ npm run serve
 ```
 
 open your browser and go to the provided link then choose your images 
-(should you not have some at hand use the ones in the svg folder) and take it for a spin
+(should you not have some at hand use the ones in the svg folder) and take it for a spin  
+
+-- made with THREE.js
 
 
 
