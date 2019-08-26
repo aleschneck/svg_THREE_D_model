@@ -1,4 +1,4 @@
-import { Mesh } from 'three-full';
+import { Mesh } from "three-full";
 
 /**
  * Class representing a Mesh with extra attributes colour and side.
@@ -11,8 +11,8 @@ class MeshWithCustomAttrs extends Mesh {
    * @param  { number } colour - a hex code ( the shape color )
    * @param  { boolean } side - whether it corresponds to the side image
    */
-  constructor( geometry, material, colour, side ) {
-    super( geometry, material );
+  constructor(geometry, material, colour, side) {
+    super(geometry, material);
     this.colour = colour;
     this.side = side;
   }
@@ -27,7 +27,7 @@ class MeshWithCustomAttrs extends Mesh {
    * set the colour attribute ( should it be needed )
    * @param  { number } colour - a hex code
    */
-  set hex( colour ) {
+  set hex(colour) {
     this.colour = colour;
   }
 }
