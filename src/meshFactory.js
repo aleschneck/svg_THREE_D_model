@@ -1,5 +1,5 @@
-import * as THREE from 'three-full';
-const ThreeBSP = require('three-js-csg')(THREE);
+import * as THREE from "three-full";
+const ThreeBSP = require("three-js-csg")(THREE);
 
 /**
  * compute two meshes with constructive solid geometry (CSG)
@@ -9,24 +9,24 @@ const ThreeBSP = require('three-js-csg')(THREE);
  * @param  { string } [operation=intersect] - the type of boolean operation,
  * @return { THREE.Mesh } the computed solid
  */
-const meshFactory = ( a, b, material, operation = 'intersect' ) => {
+const meshFactory = (a, b, material, operation = "intersect") => {
   //console.log( a.hex, b.hex );
   const aBSP = new ThreeBSP(a);
   const bBSP = new ThreeBSP(b);
 
   let sub = null;
-  switch( operation ) {
-    case 'intersect':
+  switch (operation) {
+    case "intersect":
       sub = aBSP.intersect(bBSP);
       break;
-    case 'union':
+    case "union":
       sub = aBSP.union(bBSP);
       break;
-    case 'subtract':
+    case "subtract":
       sub = aBSP.subtract(bBSP);
       break;
     default:
-      console.warn( `${operation} is not a supported operation` );
+      console.warn(`${operation} is not a supported operation`);
   }
 
   const newMesh = sub.toMesh();
